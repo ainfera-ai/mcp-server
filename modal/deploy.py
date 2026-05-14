@@ -14,6 +14,11 @@ import modal
 
 app = modal.App("ainfera-mcp")
 
+# The raw Modal web URL must be allow-listed past FastMCP's DNS-rebinding
+# protection (subdomain wildcards aren't supported, so the host is exact).
+# mcp.ainfera.ai is allow-listed by default in ainfera_mcp.server.
+MODAL_WEB_HOST = "hizrianraz--ainfera-mcp-mcp-app.modal.run"
+
 image = (
     modal.Image.debian_slim(python_version="3.12")
     .pip_install(
@@ -21,6 +26,7 @@ image = (
         "httpx>=0.27.0",
         "pydantic>=2.6.0",
     )
+    .env({"AINFERA_MCP_ALLOWED_HOSTS": MODAL_WEB_HOST})
     .add_local_python_source("ainfera_mcp")
 )
 
