@@ -6,7 +6,7 @@ from mcp.server.fastmcp import FastMCP
 
 
 QUICKSTART = """\
-You are helping the user get started with Ainfera, prime inference for AI agents.
+You are helping the user get started with Ainfera, the Inference of AI Agents.
 
 Walk them through these steps using the Ainfera MCP tools:
 

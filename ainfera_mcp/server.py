@@ -29,7 +29,7 @@ _transport_security = TransportSecuritySettings(
 mcp = FastMCP(
     name="ainfera",
     instructions=(
-        "Ainfera MCP server — prime inference for AI agents. "
+        "Ainfera MCP server — the Inference of AI Agents. "
         "Use the tools to register Agents, mint AgentCards, make Inference calls, "
         "manage Wallets, and read/verify AuditChains. "
         "Read the ainfera://ontology resource for the canonical entity model."
