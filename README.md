@@ -56,7 +56,7 @@ AINFERA_API_KEY=sk-... ainfera-mcp
 
 ### 2. Ask your agent
 
-> Register an Ainfera agent named "research-bot" and run an inference call against `gpt-4o` asking it to summarize the latest arXiv submission on retrieval.
+> Register an Ainfera agent named "research-bot" and run an inference call against `gpt-5` asking it to summarize the latest arXiv submission on retrieval.
 
 Your agent will call `register_agent`, `topup_wallet`, `inference`, and return a Receipt URL pointing at the signed AuditEvent.
 
