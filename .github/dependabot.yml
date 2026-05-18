@@ -14,10 +14,6 @@ updates:
       day: "monday"
     open-pull-requests-limit: 5
     labels: ["dependencies", "python"]
-  - package-ecosystem: "npm"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
-    open-pull-requests-limit: 5
-    labels: ["dependencies", "npm"]
+  # AIN-148: npm ecosystem removed — this repo is pure Python (no package.json
+  # at root). The npm dependabot job was failing every week with no actual
+  # manifest to update. Re-add if a real package.json is introduced.
