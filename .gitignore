@@ -23,6 +23,3 @@ htmlcov/
 
 # Claude Code config — private by default
 .claude/*
-!.claude/CLAUDE.md
-!.claude/SKILL.md
-!.claude/AGENTS.md
