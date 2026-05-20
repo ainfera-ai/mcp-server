@@ -33,24 +33,34 @@ curl -sS -o /dev/null -X POST "$URL" "${HDR[@]}" \
   -d '{"jsonrpc":"2.0","method":"notifications/initialized"}'
 
 echo "── 3 · tools/call inference ──"
+PAYLOAD=$(AGENT_ID="$AID" python3 <<'PY'
+import json
+import os
+
+print(
+    json.dumps(
+        {
+            "jsonrpc": "2.0",
+            "id": 3,
+            "method": "tools/call",
+            "params": {
+                "name": "inference",
+                "arguments": {
+                    "agent_id": os.environ["AGENT_ID"],
+                    "model": "claude-haiku-4-5",
+                    "messages": [{"role": "user", "content": "Reply with one word: routed"}],
+                    "max_tokens": 10,
+                },
+            },
+        }
+    )
+)
+PY
+)
 OUT=$(curl -sS -X POST "$URL" "${HDR[@]}" \
   -H "Authorization: Bearer $KEY" \
   -H "mcp-session-id: $SID" \
-  -d "$(python3 -c "
-import json
-print(json.dumps({
-  'jsonrpc': '2.0', 'id': 3, 'method': 'tools/call',
-  'params': {
-    'name': 'inference',
-    'arguments': {
-      'agent_id': '$AID',
-      'model': 'claude-haiku-4-5',
-      'messages': [{'role': 'user', 'content': 'Reply with one word: routed'}],
-      'max_tokens': 10,
-    },
-  },
-}))
-")")
+  -d "$PAYLOAD")
 
 if echo "$OUT" | grep -q '"isError":true'; then
   echo "FAIL: inference tool returned error"

@@ -10,6 +10,7 @@ import pytest
 import respx
 
 from ainfera_mcp import _client
+from ainfera_mcp.middleware import inbound_bearer_var
 
 
 def _fake_request_ctx(headers: dict[str, str] | None):
@@ -31,6 +32,22 @@ async def test_bearer_from_mcp_authorization_header(monkeypatch):
         await _client.request("GET", "/v1/agents/abc")
 
     assert route.calls.last.request.headers["authorization"] == "Bearer tenant-key-123"
+
+
+@respx.mock
+async def test_bearer_from_inbound_contextvar(monkeypatch):
+    monkeypatch.delenv("AINFERA_API_KEY", raising=False)
+    route = respx.get("https://api.test.ainfera.ai/v1/agents/abc").mock(
+        return_value=httpx.Response(200, json={"id": "abc"})
+    )
+
+    token = inbound_bearer_var.set("ctx-var-key")
+    try:
+        await _client.request("GET", "/v1/agents/abc")
+    finally:
+        inbound_bearer_var.reset(token)
+
+    assert route.calls.last.request.headers["authorization"] == "Bearer ctx-var-key"
 
 
 @respx.mock

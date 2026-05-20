@@ -138,7 +138,7 @@ tests/
 
 ## Deployment
 
-Hosted at `mcp.ainfera.ai` via Modal:
+Hosted at `mcp.ainfera.ai` via Railway (FastMCP streamable-http; `AINFERA_MCP_TRANSPORT=http`):
 
 ```bash
 modal deploy modal/deploy.py

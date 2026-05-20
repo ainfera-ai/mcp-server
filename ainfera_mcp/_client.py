@@ -29,7 +29,13 @@ def _base_url() -> str:
 
 
 def _bearer_from_mcp_http_request() -> str | None:
-    """Read tenant API key from the Starlette request on streamable-http MCP calls."""
+    """Read tenant API key captured by InboundBearerMiddleware or request_ctx fallback."""
+    from ainfera_mcp.middleware import get_inbound_bearer
+
+    token = get_inbound_bearer()
+    if token:
+        return token
+
     try:
         from mcp.server.lowlevel.server import request_ctx
     except ImportError:
