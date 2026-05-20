@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-**The Inference of AI Agents, exposed as MCP tools.**
+**Agent-native inference routing by Ainfera — exposed as MCP tools.**
 
 `ainfera-mcp` is the public [Model Context Protocol](https://modelcontextprotocol.io/) server for [Ainfera](https://ainfera.ai). Point any MCP-compatible client at `mcp.ainfera.ai`, paste your Ainfera API key, and Ainfera's L1–L5 primitives appear as tools:
 
