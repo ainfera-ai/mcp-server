@@ -131,20 +131,35 @@ ainfera_mcp/
 ├── tools/             # MCP tools (one module per primitive group)
 ├── resources/         # ainfera:// resources
 └── prompts/           # MCP prompts
+ainfera_mcp/asgi.py     # Railway entry (uvicorn ainfera_mcp.asgi:app)
 modal/
-└── deploy.py          # Modal serverless deployment
+└── deploy.py          # Optional Modal fallback
 tests/
 ```
 
 ## Deployment
 
-Hosted at `mcp.ainfera.ai` via Railway (FastMCP streamable-http; `AINFERA_MCP_TRANSPORT=http`):
+**Production:** `mcp.ainfera.ai` on Railway — Docker image runs:
 
 ```bash
-modal deploy modal/deploy.py
+uvicorn ainfera_mcp.asgi:app --host 0.0.0.0 --port $PORT
 ```
 
-Cloudflare Workers fronts the Modal web endpoint to serve the custom domain.
+`asgi.py` wraps `http_app()` with `InboundBearerMiddleware` so per-request
+`Authorization: Bearer ai_infera_*` reaches inference tools.
+
+**Local smoke:**
+
+```bash
+./cloudflare/smoke-mcp.sh
+./cloudflare/smoke-mcp-keyed.sh
+```
+
+**Optional Modal** (separate from prod):
+
+```bash
+uv run modal deploy modal/deploy.py
+```
 
 ---
 
