@@ -16,7 +16,15 @@ jobs:
         run: ./cloudflare/smoke-mcp.sh
 
       - name: MCP keyed inference (signup + tools/call)
-        run: ./cloudflare/smoke-mcp-keyed.sh
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if ./cloudflare/smoke-mcp-keyed.sh; then
+              exit 0
+            fi
+            echo "attempt $attempt failed; waiting 30s for Railway deploy…"
+            sleep 30
+          done
+          exit 1
 
   unit:
     runs-on: ubuntu-latest

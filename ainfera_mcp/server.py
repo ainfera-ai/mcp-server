@@ -42,6 +42,13 @@ resources.register(mcp)
 prompts.register(mcp)
 
 
+@mcp.custom_route("/health", methods=["GET"])
+async def health(_request):  # type: ignore[no-untyped-def]
+    from starlette.responses import JSONResponse
+
+    return JSONResponse({"status": "ok", "service": "ainfera-mcp"})
+
+
 def http_app():
     """Streamable-HTTP ASGI app with inbound Bearer capture (Railway + Modal)."""
     from starlette.applications import Starlette
