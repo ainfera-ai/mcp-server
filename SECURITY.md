@@ -2,18 +2,33 @@
 
 ## Reporting a vulnerability
 
-Email **security@ainfera.ai** with:
-1. Description of the vulnerability
-2. Steps to reproduce
-3. Affected versions
-4. Potential impact
+Please report security vulnerabilities to **security@ainfera.ai** (or **hi@ainfera.ai** if security@ is unavailable).
 
-We respond within 48 hours. Coordinated disclosure preferred.
+**Do not** open a public GitHub issue for security-sensitive reports.
 
-**Do not report security issues via public GitHub issues.**
+When reporting, please include:
 
-## Supported versions
+- The repository and version (commit SHA if possible)
+- A description of the issue and its impact
+- Steps to reproduce
+- Any suggested mitigation, if known
 
-- Latest minor: full support
-- Previous minor: security fixes only
-- Older: please upgrade
+## Response process
+
+- Acknowledgement within **3 business days**
+- Initial assessment within **7 business days**
+- Coordinated disclosure: we'll work with you on a timeline before any public discussion
+
+## Scope
+
+This policy covers code in this repository. For vulnerabilities in the Ainfera platform itself (api.ainfera.ai, app.ainfera.ai), please report the same way — we'll route internally.
+
+## Out of scope
+
+- Denial-of-service via brute-force traffic against public endpoints
+- Reports from automated scanners without a demonstrated exploit
+- Issues in dependencies we don't pin (file with the upstream maintainer)
+
+## Recognition
+
+We don't run a paid bounty at this time. We do publicly credit researchers who report responsibly, with their permission.

@@ -1,18 +1,14 @@
 FROM python:3.12-slim
 
+COPY --from=ghcr.io/astral-sh/uv:0.9 /uv /uvx /usr/local/bin/
+
 WORKDIR /app
 
-# Install runtime deps directly (avoids `pip install .` PEP 517 build that
-# needs README.md in the isolated build env, which Nixpacks doesn't copy).
-RUN pip install --no-cache-dir \
-    "mcp>=1.2.0" \
-    "httpx>=0.27.0" \
-    "pydantic>=2.6.0" \
-    "uvicorn[standard]>=0.30"
-
-# Copy source — read at import time, no install step needed.
+COPY pyproject.toml README.md uv.lock ./
 COPY ainfera_mcp ./ainfera_mcp
+RUN uv sync --frozen --no-dev
 
 EXPOSE 8000
 
-CMD uvicorn ainfera_mcp.asgi:app --host 0.0.0.0 --port ${PORT:-8000}
+# Shell form so Railway-injected ${PORT} expands.
+CMD .venv/bin/uvicorn ainfera_mcp.asgi:app --host 0.0.0.0 --port ${PORT:-8000}

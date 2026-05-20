@@ -2,7 +2,7 @@
 
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-**The Inference of AI Agents, exposed as MCP tools.**
+**Agent-native inference routing by Ainfera — exposed as MCP tools.**
 
 `ainfera-mcp` is the public [Model Context Protocol](https://modelcontextprotocol.io/) server for [Ainfera](https://ainfera.ai). Point any MCP-compatible client at `mcp.ainfera.ai`, paste your Ainfera API key, and Ainfera's L1–L5 primitives appear as tools:
 
@@ -104,7 +104,14 @@ Tool names match the canonical entity names in [Ontology v1.0 §2](https://ainfe
 | `AINFERA_API_BASE` | `https://api.ainfera.ai` | Override for staging / self-hosted |
 | `AINFERA_MCP_TRANSPORT` | `stdio` | `stdio`, `sse`, or `http` |
 
-For the hosted server, the API key is read from the `Authorization` header on each MCP request, so a single Modal deployment serves all tenants.
+For the hosted server, the API key is read from the `Authorization: Bearer ai_infera_*` header on each MCP HTTP request (streamable-http), with `AINFERA_API_KEY` on Modal as a server-wide fallback.
+
+Production smoke:
+
+```bash
+./cloudflare/smoke-mcp.sh          # initialize + tools/list
+./cloudflare/smoke-mcp-keyed.sh    # signup + tools/call inference + audit verify
+```
 
 ---
 
@@ -131,7 +138,7 @@ tests/
 
 ## Deployment
 
-Hosted at `mcp.ainfera.ai` via Modal:
+Hosted at `mcp.ainfera.ai` via Railway (FastMCP streamable-http; `AINFERA_MCP_TRANSPORT=http`):
 
 ```bash
 modal deploy modal/deploy.py

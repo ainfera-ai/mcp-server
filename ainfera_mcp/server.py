@@ -42,15 +42,42 @@ resources.register(mcp)
 prompts.register(mcp)
 
 
+def http_app():
+    """Streamable-HTTP ASGI app with inbound Bearer capture (Railway + Modal)."""
+    from starlette.applications import Starlette
+
+    from ainfera_mcp.middleware import InboundBearerMiddleware
+
+    app: Starlette = mcp.streamable_http_app()
+    app.add_middleware(InboundBearerMiddleware)
+    return app
+
+
+async def _run_http_async() -> None:
+    import uvicorn
+
+    host = os.environ.get("FASTMCP_HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", os.environ.get("FASTMCP_PORT", "8000")))
+    config = uvicorn.Config(
+        http_app(),
+        host=host,
+        port=port,
+        log_level=os.environ.get("FASTMCP_LOG_LEVEL", "info").lower(),
+    )
+    await uvicorn.Server(config).serve()
+
+
 def run() -> None:
     """Console-script entry. Transport selected by AINFERA_MCP_TRANSPORT env var."""
+    import anyio
+
     transport = os.environ.get("AINFERA_MCP_TRANSPORT", "stdio")
     if transport == "stdio":
         mcp.run()
     elif transport == "sse":
         mcp.run(transport="sse")
     elif transport == "http":
-        mcp.run(transport="streamable-http")
+        anyio.run(_run_http_async)
     else:
         raise SystemExit(f"Unknown AINFERA_MCP_TRANSPORT: {transport}")
 

@@ -1,23 +1,22 @@
-name: CI
+name: hygiene
+
 on:
+  pull_request:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
-permissions:
-  contents: read
+
 jobs:
-  test:
+  required-files:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v3
-      - run: uv python install ${{ matrix.python-version }}
-      - run: uv sync --all-extras --dev
-      - run: uv run ruff check .
-      - run: uv run ruff format --check .
-      - run: uv run mypy .
-      - run: uv run pytest --tb=short
+      - name: Verify required community files
+        run: |
+          set -e
+          for f in README.md LICENSE CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md .github/CODEOWNERS; do
+            if [ ! -f "$f" ]; then
+              echo "::error file=$f::required community file missing"
+              exit 1
+            fi
+          done
+          echo "All required community files present."

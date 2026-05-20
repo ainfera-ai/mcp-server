@@ -1,8 +1,9 @@
 """Thin HTTP client for the Ainfera API.
 
 Bearer auth resolves in this order:
-1. `bearer` argument (per-request override from MCP context)
-2. `AINFERA_API_KEY` env var (server-wide default)
+1. `bearer` argument (per-request override)
+2. `Authorization: Bearer` on the inbound MCP HTTP request (streamable-http)
+3. `AINFERA_API_KEY` env var (server-wide default on Modal)
 """
 
 from __future__ import annotations
@@ -27,12 +28,49 @@ def _base_url() -> str:
     return os.environ.get("AINFERA_API_BASE", DEFAULT_BASE_URL).rstrip("/")
 
 
+def _bearer_from_mcp_http_request() -> str | None:
+    """Read tenant API key captured by InboundBearerMiddleware or request_ctx fallback."""
+    from ainfera_mcp.middleware import get_inbound_bearer
+
+    token = get_inbound_bearer()
+    if token:
+        return token
+
+    try:
+        from mcp.server.lowlevel.server import request_ctx
+    except ImportError:
+        return None
+
+    try:
+        ctx = request_ctx.get()
+    except LookupError:
+        return None
+
+    req = getattr(ctx, "request", None)
+    if req is None:
+        return None
+
+    headers = getattr(req, "headers", None)
+    if headers is None:
+        return None
+
+    auth = headers.get("authorization") or headers.get("Authorization")
+    if not auth:
+        return None
+
+    scheme, _, value = auth.partition(" ")
+    if scheme.lower() != "bearer" or not value.strip():
+        return None
+    return value.strip()
+
+
 def _resolve_bearer(bearer: str | None) -> str:
-    token = bearer or os.environ.get("AINFERA_API_KEY")
+    token = bearer or _bearer_from_mcp_http_request() or os.environ.get("AINFERA_API_KEY")
     if not token:
         raise AinferaAPIError(
             401,
-            "Missing Ainfera API key. Set AINFERA_API_KEY env var or pass bearer.",
+            "Missing Ainfera API key. Pass Authorization: Bearer on the MCP request "
+            "or set AINFERA_API_KEY on the server.",
         )
     return token
 

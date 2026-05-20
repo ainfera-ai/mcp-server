@@ -40,6 +40,6 @@ image = (
 @modal.asgi_app()
 def mcp_app():
     """Expose the FastMCP server as an ASGI app for streamable HTTP transport."""
-    from ainfera_mcp.server import mcp
+    from ainfera_mcp.server import http_app
 
-    return mcp.streamable_http_app()
+    return http_app()

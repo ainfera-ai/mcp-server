@@ -1,0 +1,35 @@
+name: smoke-prod
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mcp-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: MCP initialize + tools/list
+        run: ./cloudflare/smoke-mcp.sh
+
+      - name: MCP keyed inference (signup + tools/call)
+        run: |
+          for attempt in 1 2 3 4 5 6; do
+            if ./cloudflare/smoke-mcp-keyed.sh; then
+              exit 0
+            fi
+            echo "attempt $attempt failed; waiting 30s for Railway deploy…"
+            sleep 30
+          done
+          exit 1
+
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --extra dev
+      - run: uv run pytest -q

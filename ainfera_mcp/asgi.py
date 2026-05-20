@@ -1,21 +1,17 @@
-"""ASGI entry point for Railway / generic uvicorn deploys.
-
-Wraps the FastMCP streamable-HTTP Starlette app and grafts on a /health
-route so Railway's healthcheck (and any uptime monitor) gets a 200
-without speaking MCP.
-"""
+"""ASGI entry for Railway / uvicorn — http_app() + /health for probes."""
 
 from __future__ import annotations
 
 from starlette.responses import JSONResponse
 from starlette.routing import Route
 
-from ainfera_mcp.server import mcp
+from ainfera_mcp.server import http_app
+
+app = http_app()
 
 
-async def _health(_request):
-    return JSONResponse({"status": "ok"})
+async def _health(_request):  # type: ignore[no-untyped-def]
+    return JSONResponse({"status": "ok", "service": "ainfera-mcp"})
 
 
-app = mcp.streamable_http_app()
 app.router.routes.append(Route("/health", _health, methods=["GET"]))
