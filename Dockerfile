@@ -8,9 +8,7 @@ COPY pyproject.toml README.md uv.lock ./
 COPY ainfera_mcp ./ainfera_mcp
 RUN uv sync --frozen --no-dev
 
-ENV AINFERA_MCP_TRANSPORT=http
-
 EXPOSE 8000
 
 # Shell form so Railway-injected ${PORT} expands.
-CMD .venv/bin/ainfera-mcp
+CMD .venv/bin/uvicorn ainfera_mcp.asgi:app --host 0.0.0.0 --port ${PORT:-8000}
