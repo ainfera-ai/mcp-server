@@ -1,0 +1,27 @@
+name: smoke-prod
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mcp-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: MCP initialize + tools/list
+        run: ./cloudflare/smoke-mcp.sh
+
+      - name: MCP keyed inference (signup + tools/call)
+        run: ./cloudflare/smoke-mcp-keyed.sh
+
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v7
+      - run: uv sync --extra dev
+      - run: uv run pytest -q
