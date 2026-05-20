@@ -3,7 +3,7 @@ main = "worker.js"
 compatibility_date = "2026-05-19"
 workers_dev = false
 
-# Route mcp.ainfera.ai/* → the Modal MCP server.
+# Optional: route mcp.ainfera.ai/* → Railway MCP origin (see README.md).
 #
 # Prerequisite: a DNS-only AAAA/CNAME record for `mcp` on the ainfera.ai
 # zone, so Cloudflare proxies traffic through the Workers fleet.

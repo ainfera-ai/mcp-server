@@ -1,37 +1,28 @@
-# Cloudflare Worker — mcp.ainfera.ai → Modal reverse proxy
+# Cloudflare Worker — optional edge in front of Railway MCP
 
-The Modal deployment at `hizrianraz--ainfera-mcp-mcp-app.modal.run` is
-the source of truth for the MCP server. This worker fronts it on
-`mcp.ainfera.ai` so external MCP clients use the branded URL.
+**Production (2026-05-20):** `mcp.ainfera.ai` terminates on **Railway** (`x-railway-edge`), running `ainfera_mcp.asgi:app` from [ainfera-ai/mcp-server](https://github.com/ainfera-ai/mcp-server). See [`docs/RAILWAY-DEPLOY.md`](../docs/RAILWAY-DEPLOY.md).
 
-## Deploy
+This directory is an **optional** Cloudflare Worker reverse-proxy. Use it only if you want WAF/rate-limit/observability at the edge without changing the Railway origin.
+
+## Deploy (optional)
 
 ```bash
 cd cloudflare
 wrangler login    # once, cached in ~/.config/.wrangler
-wrangler deploy   # uploads worker.js + binds the mcp.ainfera.ai/* route
+# Set WORKER_ORIGIN to your Railway public URL before deploy
+wrangler deploy
 ```
 
-Verify:
+Verify against production (direct Railway or via worker):
 
 ```bash
-curl -i -X POST https://mcp.ainfera.ai/mcp \
-  -H "Content-Type: application/json" \
-  -H "Accept: application/json, text/event-stream" \
-  -d '{"jsonrpc":"2.0","id":1,"method":"initialize",
-       "params":{"protocolVersion":"2024-11-05",
-                 "capabilities":{},
-                 "clientInfo":{"name":"smoke","version":"0.0.1"}}}'
+curl -sS https://mcp.ainfera.ai/health
+./smoke-mcp.sh
+./smoke-mcp-keyed.sh
 ```
 
-Expect a 200 with a streaming `event: message` payload containing the
-server's `serverInfo` block (name=`ainfera`, version per the Modal
-deploy).
+## Why a worker at all
 
-## Why a worker not a CNAME
+DNS may stay Cloudflare-proxied (`cf-ray`) while the origin is Railway. A worker adds rate-limiting, API-key validation at the edge, or path rewrites without rotating the Railway service URL.
 
-Modal's built-in custom-domain feature works for HTTPS termination,
-but the Cloudflare layer is already there (DNS proxied, WAF + DDoS
-shield, cache). Fronting Modal with a worker keeps that layer + lets
-us add rate-limiting / API-key validation / observability later
-without rotating endpoints.
+**Do not** point docs or smokes at Modal — Modal is an optional dev fallback only (`modal/deploy.py`).
