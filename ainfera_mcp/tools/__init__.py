@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from mcp.server.fastmcp import FastMCP
 
-from . import agent_card, agents, audit, inference, trust_score, wallet
+from . import agent_card, agents, audit, inference, wallet
 
 
 def register(mcp: FastMCP) -> None:
@@ -13,4 +13,3 @@ def register(mcp: FastMCP) -> None:
     inference.register(mcp)
     wallet.register(mcp)
     audit.register(mcp)
-    trust_score.register(mcp)
