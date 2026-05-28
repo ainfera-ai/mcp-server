@@ -25,9 +25,6 @@ Walk them through these steps using the Ainfera MCP tools:
    Use `read_audit_chain` to see the most recent AuditEvents,
    then `verify_audit_chain` to confirm the hash chain is intact.
 
-5. **Check TrustScore (optional)**
-   Use `get_trust_score` to see the Agent's ATS v1.0 score (0-1000).
-
 Read the `ainfera://ontology` resource for the canonical entity model
 if you need deeper context on any primitive.
 """

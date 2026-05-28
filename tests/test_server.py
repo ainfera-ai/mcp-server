@@ -16,7 +16,6 @@ EXPECTED_TOOLS = {
     "get_wallet",
     "read_audit_chain",
     "verify_audit_chain",
-    "get_trust_score",
 }
 
 
