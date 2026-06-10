@@ -24,4 +24,4 @@ cd mcp-server && ./cloudflare/smoke-mcp-keyed.sh
 uvicorn ainfera_mcp.asgi:app --host 0.0.0.0 --port $PORT
 ```
 
-`asgi.py` exports `http_app()` which includes `InboundBearerMiddleware` for per-request `Authorization: Bearer ai_infera_*`.
+`asgi.py` exports `http_app()` which includes `InboundBearerMiddleware` for per-request `Authorization: Bearer ainfera_*`.

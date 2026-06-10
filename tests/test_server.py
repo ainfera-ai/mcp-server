@@ -16,6 +16,8 @@ EXPECTED_TOOLS = {
     "get_wallet",
     "read_audit_chain",
     "verify_audit_chain",
+    # AIN-243: `get_trust_score` retired with ATS/AAMC (2026-05-22).
+    # Model trust now lives in Routing's `q_empirical` per Ontology v1.2.
 }
 
 

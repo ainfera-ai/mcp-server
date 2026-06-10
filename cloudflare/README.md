@@ -1,6 +1,6 @@
 # Cloudflare Worker — optional edge in front of Railway MCP
 
-**Production (2026-05-20):** `mcp.ainfera.ai` terminates on **Railway** (`x-railway-edge`), running `ainfera_mcp.asgi:app` from [ainfera-ai/mcp-server](https://github.com/ainfera-ai/mcp-server). See [`docs/RAILWAY-DEPLOY.md`](../docs/RAILWAY-DEPLOY.md).
+**Production (2026-05-20):** `mcp.ainfera.ai` terminates on **Railway** (`x-railway-edge`), running `ainfera_mcp.asgi:app` from [ainfera-ai/mcp-server](https://github.com/ainfera-ai/mcp-server). See [`docs/RAILWAY_DEPLOY.md`](../docs/RAILWAY_DEPLOY.md).
 
 This directory is an **optional** Cloudflare Worker reverse-proxy. Use it only if you want WAF/rate-limit/observability at the edge without changing the Railway origin.
 

@@ -7,7 +7,7 @@
 //
 // Pass-through semantics:
 //   - All HTTP methods (POST for MCP handshake, GET for SSE streams)
-//   - Authorization: Bearer ai_infera_* headers
+//   - Authorization: Bearer ainfera_* headers
 //   - request/response bodies untouched
 //   - Streamable HTTP for SSE responses (no body buffering — required
 //     for MCP's notifications/sampling capability)

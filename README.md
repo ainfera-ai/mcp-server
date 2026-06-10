@@ -104,7 +104,7 @@ Tool names match the canonical entity names in [Ontology v1.0 §2](https://ainfe
 | `AINFERA_API_BASE` | `https://api.ainfera.ai` | Override for staging / self-hosted |
 | `AINFERA_MCP_TRANSPORT` | `stdio` | `stdio`, `sse`, or `http` |
 
-For the hosted server, the API key is read from the `Authorization: Bearer ai_infera_*` header on each MCP HTTP request (streamable-http), with `AINFERA_API_KEY` on Modal as a server-wide fallback.
+For the hosted server, the API key is read from the `Authorization: Bearer ainfera_*` header on each MCP HTTP request (streamable-http), with `AINFERA_API_KEY` on Modal as a server-wide fallback.
 
 Production smoke:
 
@@ -146,7 +146,7 @@ uvicorn ainfera_mcp.asgi:app --host 0.0.0.0 --port $PORT
 ```
 
 `asgi.py` wraps `http_app()` with `InboundBearerMiddleware` so per-request
-`Authorization: Bearer ai_infera_*` reaches inference tools.
+`Authorization: Bearer ainfera_*` reaches inference tools.
 
 **Local smoke:**
 
