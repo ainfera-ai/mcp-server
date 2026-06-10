@@ -30,12 +30,18 @@ jobs:
           sudo install -m 0755 /tmp/gitleaks /usr/local/bin/gitleaks
           gitleaks version
 
-      - name: gitleaks detect (PR diff or last commit)
+      - name: gitleaks detect (PR diff or pushed range)
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             LOG_OPTS="${{ github.event.pull_request.base.sha }}..${{ github.sha }}"
           else
-            LOG_OPTS="HEAD~1..HEAD"
+            BEFORE="${{ github.event.before }}"
+            AFTER="${{ github.event.after }}"
+            if [ -z "$BEFORE" ] || [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+              LOG_OPTS="HEAD~1..HEAD"
+            else
+              LOG_OPTS="${BEFORE}..${AFTER}"
+            fi
           fi
           gitleaks detect \
             --config .gitleaks.toml \
