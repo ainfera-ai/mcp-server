@@ -14,6 +14,8 @@
 
 No glue code, no SDK install — just MCP.
 
+> **Note (AIN-243):** ATS / TrustScore retired 2026-05-22. Model quality is surfaced via L2 Routing (`q_empirical`), not a separate trust-score tool.
+
 ---
 
 ## Quickstart

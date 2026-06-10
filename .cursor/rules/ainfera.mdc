@@ -13,9 +13,9 @@ Entity classes (PascalCase): Tenant, Agent, AgentCard, Inference, Provider,
 Model, Wallet, Ledger, LedgerEntry, AuditEvent, AuditChain, Settlement,
 Skill, Receipt.
 
-(TrustScore / Lens / Voter / Council were retired with AIN-243 — model trust
-is expressed as Routing `q_empirical`. See PURGE_LOG.md at the repo group
-root for the full retirement list.)
+Retired (AIN-243 — do not reintroduce): TrustScore, Lens, Voter, Council.
+Model trust is expressed as Routing `q_empirical`. See PURGE_LOG.md at the
+repo group root for the full retirement list.
 
 API paths (kebab-case): /v1/agents/:id · /v1/audit/:agent_id
 JSON fields (snake_case): agent_id · created_at
