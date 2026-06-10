@@ -11,9 +11,10 @@
 - Make **Inference** calls through L2 Routing
 - Top up & inspect **Wallets**
 - Read & verify **AuditChains** (hash-chained, signed AuditEvents)
-- Read **TrustScore** (ATS v1.0, 0–1000)
 
 No glue code, no SDK install — just MCP.
+
+> **Note (AIN-243):** ATS / TrustScore retired 2026-05-22. Model quality is surfaced via L2 Routing (`q_empirical`), not a separate trust-score tool.
 
 ---
 
@@ -76,7 +77,6 @@ Your agent will call `register_agent`, `topup_wallet`, `inference`, and return a
 | `get_wallet` | Balance + recent ledger entries |
 | `read_audit_chain` | Most recent AuditEvents |
 | `verify_audit_chain` | Verify hash chain integrity |
-| `get_trust_score` | ATS v1.0 score (0–1000) |
 
 Tool names match the canonical entity names in [Ontology v1.0 §2](https://ainfera.ai/ontology).
 

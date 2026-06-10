@@ -10,10 +10,12 @@ alwaysApply: true
 ## Vocabulary (Ontology v1.0)
 Entity classes (PascalCase): Tenant, Agent, AgentCard, Inference, Provider,
 Model, Wallet, Ledger, LedgerEntry, AuditEvent, AuditChain, Settlement,
-Skill, Receipt, TrustScore, Lens, Voter, Council.
+Skill, Receipt.
+
+Retired (AIN-243 — do not reintroduce): TrustScore, Lens, Voter, Council.
 
 API paths (kebab-case): /v1/agents/:id · /v1/audit/:agent_id
-JSON fields (snake_case): agent_id · trust_score · created_at
+JSON fields (snake_case): agent_id · created_at
 
 ## Banned terms
 - "Exchange" -> "Infrastructure"
