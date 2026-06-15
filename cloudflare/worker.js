@@ -1,9 +1,12 @@
-// Cloudflare Worker — mcp.ainfera.ai → Modal reverse proxy.
+// Cloudflare Worker — mcp.ainfera.ai → Railway reverse proxy.
 //
-// The Modal deployment at hizrianraz--ainfera-mcp-mcp-app.modal.run is
-// the source of truth for the MCP server. This worker fronts it on the
-// canonical mcp.ainfera.ai domain so external MCP clients (Claude
-// Desktop, Cursor, VS Code) can use the branded URL.
+// Production runs on Railway (not Modal). See docs/RAILWAY_DEPLOY.md.
+// DNS mcp.ainfera.ai → Railway edge (confirmed via x-railway-edge header).
+//
+// FOUNDER ACTION REQUIRED: set RAILWAY_ORIGIN below to the Railway
+// internal URL for the ainfera-mcp service (e.g.
+// https://ainfera-mcp-production.up.railway.app).  Find it in the
+// Railway dashboard under the ainfera-mcp service → Settings → Domains.
 //
 // Pass-through semantics:
 //   - All HTTP methods (POST for MCP handshake, GET for SSE streams)
@@ -19,7 +22,9 @@
 // Custom domain `mcp.ainfera.ai` is set up via the Routes block in
 // wrangler.toml + a CNAME (already in place on the ainfera.ai zone).
 
-const MODAL_ORIGIN = "https://hizrianraz--ainfera-mcp-mcp-app.modal.run";
+// STALE — was Modal; production moved to Railway. Replace with the
+// Railway service URL from the dashboard before re-deploying this worker.
+const MODAL_ORIGIN = "REPLACE_WITH_RAILWAY_URL";
 
 export default {
   async fetch(request, env, ctx) {
