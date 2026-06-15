@@ -15,7 +15,7 @@ def register(mcp: FastMCP) -> None:
         """Read the most recent AuditEvents for an Agent."""
         result = await request(
             "GET",
-            f"/v1/agents/{agent_id}/audit",
+            f"/v1/audit/{agent_id}",
             params={"limit": limit},
         )
         return result.get("events", []) if isinstance(result, dict) else result
@@ -26,4 +26,4 @@ def register(mcp: FastMCP) -> None:
 
         Returns `{ ok: bool, head: str, length: int, broken_at?: str }`.
         """
-        return await request("POST", f"/v1/agents/{agent_id}/audit/verify")
+        return await request("GET", f"/v1/audit/{agent_id}/verify")

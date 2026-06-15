@@ -8,7 +8,8 @@ from ainfera_mcp.server import mcp
 EXPECTED_TOOLS = {
     "register_agent",
     "get_agent",
-    "list_agents",
+    # list_agents removed: live API has no GET /v1/agents list endpoint.
+    # Use GET /v1/users/{github_handle}/agents instead.
     "mint_agent_card",
     "verify_agent_card",
     "inference",
