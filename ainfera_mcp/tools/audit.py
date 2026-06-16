@@ -15,7 +15,7 @@ def register(mcp: FastMCP) -> None:
         """Read the most recent AuditEvents for an Agent."""
         result = await request(
             "GET",
-            f"/v1/agents/{agent_id}/audit",
+            f"/v1/audit/{agent_id}",
             params={"limit": limit},
         )
         return result.get("events", []) if isinstance(result, dict) else result
@@ -24,6 +24,6 @@ def register(mcp: FastMCP) -> None:
     async def verify_audit_chain(agent_id: str) -> dict[str, Any]:
         """Verify the hash chain integrity for an Agent's AuditChain.
 
-        Returns `{ ok: bool, head: str, length: int, broken_at?: str }`.
+        Returns ``{ valid, event_count, failure_seq?, failure_reason? }``.
         """
-        return await request("POST", f"/v1/agents/{agent_id}/audit/verify")
+        return await request("GET", f"/v1/audit/{agent_id}/verify")

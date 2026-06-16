@@ -67,14 +67,13 @@ Your agent will call `register_agent`, `topup_wallet`, `inference`, and return a
 
 | Tool | Purpose |
 |---|---|
-| `register_agent` | Register a new Agent, returns ID + AgentCard |
+| `register_agent` | Register a new Agent under a Tenant (requires `tenant_id`) |
 | `get_agent` | Fetch an Agent by ID |
-| `list_agents` | List Agents for the authenticated Tenant |
 | `mint_agent_card` | Mint a fresh JWS-signed AgentCard |
 | `verify_agent_card` | Verify a JWS AgentCard |
 | `inference` | Make an Inference through L2 Routing |
 | `topup_wallet` | Top up an Agent's Wallet |
-| `get_wallet` | Balance + recent ledger entries |
+| `get_wallet` | Wallet balance for an Agent |
 | `read_audit_chain` | Most recent AuditEvents |
 | `verify_audit_chain` | Verify hash chain integrity |
 

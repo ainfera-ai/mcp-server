@@ -15,11 +15,11 @@ def register(mcp: FastMCP) -> None:
         """Top up an Agent's Wallet by amount_usd."""
         return await request(
             "POST",
-            f"/v1/agents/{agent_id}/wallet/topup",
-            json={"amount_usd": amount_usd},
+            "/v1/wallets/topup",
+            json={"agent_id": agent_id, "amount_usd": amount_usd},
         )
 
     @mcp.tool()
     async def get_wallet(agent_id: str) -> dict[str, Any]:
-        """Get an Agent's Wallet balance and recent ledger entries."""
-        return await request("GET", f"/v1/agents/{agent_id}/wallet")
+        """Get an Agent's Wallet balance."""
+        return await request("GET", f"/v1/wallets/{agent_id}")
