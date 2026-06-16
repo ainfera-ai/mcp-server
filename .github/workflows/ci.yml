@@ -20,3 +20,25 @@ jobs:
             fi
           done
           echo "All required community files present."
+
+  lint-and-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync --extra dev
+      - name: ruff check
+        run: uv run ruff check ainfera_mcp/ tests/
+      - name: mypy
+        run: uv run mypy ainfera_mcp/ --ignore-missing-imports
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v3
+      - run: uv python install 3.12
+      - run: uv sync --extra dev
+      - name: pytest
+        run: uv run pytest -q
