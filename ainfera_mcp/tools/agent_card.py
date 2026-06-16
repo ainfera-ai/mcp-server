@@ -21,4 +21,4 @@ def register(mcp: FastMCP) -> None:
 
         Returns the decoded card payload and verification status.
         """
-        return await request("POST", "/v1/agent-cards/verify", json={"jws": card_jws})
+        return await request("POST", "/v1/agents/cards/verify", json={"jws": card_jws})

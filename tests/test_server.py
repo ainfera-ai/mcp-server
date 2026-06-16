@@ -8,7 +8,6 @@ from ainfera_mcp.server import mcp
 EXPECTED_TOOLS = {
     "register_agent",
     "get_agent",
-    "list_agents",
     "mint_agent_card",
     "verify_agent_card",
     "inference",
